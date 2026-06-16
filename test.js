@@ -49,8 +49,10 @@ const server = http.createServer((req, res) => {
     }
 });
 
-// 修改最後面的監聽邏輯
-const port = process.env.PORT || 3000;
+// --- 找到原本的 server.listen(3000, ...) ---
+// --- 改成下面這段 ---
+
+const port = process.env.PORT || 10000; // Render 通常會指定 10000
 server.listen(port, '0.0.0.0', () => {
     console.log(`✅ 伺服器已啟動，監聽 Port: ${port}`);
 });
