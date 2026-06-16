@@ -25,7 +25,11 @@ const server = http.createServer(async (req, res) => {
         const amount = new URLSearchParams(req.url.split('?')[1]).get('amount') || '100';
         const params = {
             ChoosePayment: 'ATM', EncryptType: '1', ItemName: '方向盤款項',
-            MerchantID: MerchantID, MerchantTradeDate: '2026/06/17 01:20:00',
+            MerchantID: MerchantID, 
+            MerchantTradeDate: new Date().toLocaleString('zh-TW', { 
+    year: 'numeric', month: '2-digit', day: '2-digit', 
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false 
+}).replace(/\//g, '/').replace(',', ''),
             MerchantTradeNo: 'TT' + new Date().getTime(), PaymentType: 'aio',
             ReturnURL: 'https://www.google.com', TotalAmount: parseInt(amount), TradeDesc: 'ShopOrder'
         };
