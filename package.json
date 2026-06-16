@@ -1,0 +1,9 @@
+{
+  "name": "ecpay-bot",
+  "version": "1.0.0",
+  "main": "test.js",
+  "scripts": {
+    "start": "node test.js"
+  },
+  "dependencies": {}
+}
