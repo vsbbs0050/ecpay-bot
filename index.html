@@ -1,12 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <title>ATM 付款入口</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>快速收款</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; text-align: center; }
+        input { 
+            width: 100%; padding: 15px; margin: 10px 0; font-size: 20px; 
+            border: 2px solid #ddd; border-radius: 10px; box-sizing: border-box; 
+        }
+        button { 
+            width: 100%; padding: 20px; font-size: 18px; font-weight: bold;
+            background-color: #007bff; color: white; border: none; 
+            border-radius: 10px; margin-top: 10px;
+        }
+        button:disabled { background-color: #ccc; }
+        #status { margin-top: 20px; color: #555; }
+    </style>
 </head>
 <body>
-    <h1>轉帳收款金額</h1>
-    <input type="number" id="amount" value="500">
+    <h3>輸入收款金額</h3>
+    <input type="number" id="amount" value="500" inputmode="numeric">
     <button id="payBtn" onclick="pay()">產生付款頁面</button>
     <p id="status"></p>
 
@@ -15,32 +30,30 @@
     </form>
 
     <script>
-        function pay() {
+        async function pay() {
             const btn = document.getElementById('payBtn');
             const status = document.getElementById('status');
             const amount = document.getElementById('amount').value;
             
             btn.disabled = true;
-            status.innerText = "伺服器喚醒中，請稍候...";
+            status.innerText = "喚醒中，請稍候...";
 
-            fetch('https://ecpay-bot.onrender.com/get-atm?amount=' + amount)
-            .then(res => res.json())
-            .then(data => {
-                const params = data.params;
+            try {
+                const response = await fetch('https://ecpay-bot.onrender.com/get-atm?amount=' + amount);
+                const data = await response.json();
+                
                 const container = document.getElementById('form-fields');
                 container.innerHTML = '';
-                
-                for (const key in params) {
-                    container.innerHTML += `<input type="hidden" name="${key}" value="${params[key]}">`;
+                for (const key in data.params) {
+                    container.innerHTML += `<input type="hidden" name="${key}" value="${data.params[key]}">`;
                 }
                 
-                status.innerText = "準備跳轉...";
+                status.innerText = "轉跳中...";
                 document.getElementById('ecpay-form').submit();
-            })
-            .catch(err => {
-                status.innerText = "連線失敗，請稍後再試。";
+            } catch (err) {
+                status.innerText = "連線失敗，再試一次";
                 btn.disabled = false;
-            });
+            }
         }
     </script>
 </body>
