@@ -24,9 +24,9 @@ const server = http.createServer(async (req, res) => {
     if (req.url.startsWith('/get-atm')) {
         const amount = new URLSearchParams(req.url.split('?')[1]).get('amount') || '100';
         const params = {
-            ChoosePayment: 'ATM', EncryptType: '1', ItemName: 'LeatherItem',
+            ChoosePayment: 'ATM', EncryptType: '1', ItemName: '方向盤款項',
             MerchantID: MerchantID, MerchantTradeDate: '2026/06/17 01:20:00',
-            MerchantTradeNo: 'Test' + new Date().getTime(), PaymentType: 'aio',
+            MerchantTradeNo: 'TT' + new Date().getTime(), PaymentType: 'aio',
             ReturnURL: 'https://www.google.com', TotalAmount: parseInt(amount), TradeDesc: 'ShopOrder'
         };
 
