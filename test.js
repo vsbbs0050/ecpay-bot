@@ -1,66 +1,64 @@
 const http = require('http');
 const crypto = require('crypto');
-const line = require('@line/bot-sdk');
 
-// --- 你的綠界與 LINE 設定 ---
-// --- 修改前：直接把字串寫死 (危險) ---
-// const HashKey = '你的正式HashKey'; 
-
-// --- 修改後：從環境變數讀取 (安全) ---
+// --- 設定區 ---
 const MerchantID = process.env.MY_MERCHANT_ID;
 const HashKey = process.env.MY_HASH_KEY;
 const HashIV = process.env.MY_HASH_IV;
 
-const config = {
-    channelAccessToken: 'RXPli5RxJTUq1BbRFIP1VVRGn1vhXPvQTcBRDXtzAVCzkanwsnXo5ybO9HzIdkzcZ2WPd4XAl18azCTkhYOaDY+V4TGeLyZzWGWR3X9vd0gOvh7uD/pKgfVSUhRSDG3Jnmw99A7kYNHusVp3GskwVwdB04t89/1O/w1cDnyilFU=', // 記得換成你的
-    channelSecret: 'cd186bd82322898ccae679a591ca2408'             // 記得換成你的
-};
-const client = new line.Client(config);
+// 格式化時間函數 (嚴格遵守 YYYY/MM/DD HH:mm:ss)
+function getTradeDate() {
+    const now = new Date();
+    const pad = (n) => n.toString().padStart(2, '0');
+    return `${now.getFullYear()}/${pad(now.getMonth() + 1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+}
 
-const server = http.createServer(async (req, res) => {
+const server = http.createServer((req, res) => {
+    // 允許跨網域存取
     res.setHeader('Access-Control-Allow-Origin', '*');
 
-    // 1. 處理綠界收款 API
+    // 處理綠界收款 API
     if (req.url.startsWith('/get-atm')) {
         const amount = new URLSearchParams(req.url.split('?')[1]).get('amount') || '100';
+        
         const params = {
-            ChoosePayment: 'ATM', EncryptType: '1', ItemName: '方向盤款項',
+            ChoosePayment: 'ATM', 
+            EncryptType: '1', 
+            ItemName: '方向盤款項',
             MerchantID: MerchantID, 
-            MerchantTradeDate: new Date().toLocaleString('zh-TW', { 
-    year: 'numeric', month: '2-digit', day: '2-digit', 
-    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false 
-}).replace(/\//g, '/').replace(',', ''),
-            MerchantTradeNo: 'TT' + new Date().getTime(), PaymentType: 'aio',
-            ReturnURL: 'https://www.google.com', TotalAmount: parseInt(amount), TradeDesc: 'ShopOrder'
+            MerchantTradeDate: getTradeDate(), 
+            MerchantTradeNo: 'TT' + Date.now(), 
+            PaymentType: 'aio',
+            ReturnURL: 'https://www.google.com', 
+            TotalAmount: parseInt(amount), 
+            TradeDesc: 'ShopOrder'
         };
 
+        // 計算 CheckMacValue
         let rawString = `HashKey=${HashKey}`;
         Object.keys(params).sort().forEach(key => { rawString += `&${key}=${params[key]}`; });
         rawString += `&HashIV=${HashIV}`;
-        let encoded = encodeURIComponent(rawString).toLowerCase().replace(/%2d/g, '-').replace(/%5f/g, '_').replace(/%2e/g, '.').replace(/%21/g, '!').replace(/%2a/g, '*').replace(/%28/g, '(').replace(/%29/g, ')').replace(/%20/g, '+');
+        
+        let encoded = encodeURIComponent(rawString)
+            .toLowerCase()
+            .replace(/%2d/g, '-')
+            .replace(/%5f/g, '_')
+            .replace(/%2e/g, '.')
+            .replace(/%21/g, '!')
+            .replace(/%2a/g, '*')
+            .replace(/%28/g, '(')
+            .replace(/%29/g, ')')
+            .replace(/%20/g, '+');
+
         params.CheckMacValue = crypto.createHash('sha256').update(encoded).digest('hex').toUpperCase();
 
         res.writeHead(200, {'Content-Type': 'application/json'});
         res.end(JSON.stringify({ status: "準備跳轉", params: params }));
-    } 
-    // 2. 處理 LINE Bot Webhook
-    else if (req.url === '/webhook' && req.method === 'POST') {
-        let body = '';
-        req.on('data', chunk => body += chunk);
-        req.on('end', async () => {
-            const events = JSON.parse(body).events;
-            await Promise.all(events.map(async (event) => {
-                if (event.type === 'message' && event.message.text === '收款') {
-                    await client.replyMessage(event.replyToken, {
-                        type: 'text',
-                        text: '請點擊下方連結進行 ATM 付款：https://vsbbs0050.github.io/ecpay-bot/'
-                    });
-                }
-            }));
-            res.end('OK');
-        });
+    } else {
+        res.writeHead(404);
+        res.end();
     }
 });
 
 const port = process.env.PORT || 10000;
-server.listen(port, '0.0.0.0', () => { console.log(`✅ 伺服器啟動，監聽 Port: ${port}`); });
+server.listen(port, '0.0.0.0', () => { console.log(`✅ 輕量級收款後端啟動，監聽 Port: ${port}`); });
