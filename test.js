@@ -9,8 +9,18 @@ const HashIV = process.env.MY_HASH_IV;
 // 格式化時間函數 (嚴格遵守 YYYY/MM/DD HH:mm:ss)
 function getTradeDate() {
     const now = new Date();
-    const pad = (n) => n.toString().padStart(2, '0');
-    return `${now.getFullYear()}/${pad(now.getMonth() + 1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    // 強制轉為台灣時間 UTC+8
+    const taipeiTime = new Date(now.getTime() + (8 * 60 * 60 * 1000));
+    
+    const y = taipeiTime.getUTCFullYear();
+    const m = (taipeiTime.getUTCMonth() + 1).toString().padStart(2, '0');
+    const d = taipeiTime.getUTCDate().toString().padStart(2, '0');
+    const hh = taipeiTime.getUTCHours().toString().padStart(2, '0');
+    const mm = taipeiTime.getUTCMinutes().toString().padStart(2, '0');
+    const ss = taipeiTime.getUTCSeconds().toString().padStart(2, '0');
+    
+    // 嚴格拼接成 YYYY/MM/DD HH:mm:ss
+    return `${y}/${m}/${d} ${hh}:${mm}:${ss}`;
 }
 
 const server = http.createServer((req, res) => {
