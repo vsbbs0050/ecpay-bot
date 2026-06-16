@@ -3,9 +3,13 @@ const crypto = require('crypto');
 const line = require('@line/bot-sdk');
 
 // --- 你的綠界與 LINE 設定 ---
-const MerchantID = '3504191';
-const HashKey = 'iXuAcQDXeoeXgW00';
-const HashIV = 'oNxKnJgKY1E435LS';
+// --- 修改前：直接把字串寫死 (危險) ---
+// const HashKey = '你的正式HashKey'; 
+
+// --- 修改後：從環境變數讀取 (安全) ---
+const MerchantID = process.env.MY_MERCHANT_ID;
+const HashKey = process.env.MY_HASH_KEY;
+const HashIV = process.env.MY_HASH_IV;
 
 const config = {
     channelAccessToken: 'RXPli5RxJTUq1BbRFIP1VVRGn1vhXPvQTcBRDXtzAVCzkanwsnXo5ybO9HzIdkzcZ2WPd4XAl18azCTkhYOaDY+V4TGeLyZzWGWR3X9vd0gOvh7uD/pKgfVSUhRSDG3Jnmw99A7kYNHusVp3GskwVwdB04t89/1O/w1cDnyilFU=', // 記得換成你的
