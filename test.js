@@ -49,4 +49,8 @@ const server = http.createServer((req, res) => {
     }
 });
 
-server.listen(3000, () => console.log('✅ 伺服器已就緒，請開啟 index.html 測試'));
+// 修改最後面的監聽邏輯
+const port = process.env.PORT || 3000;
+server.listen(port, '0.0.0.0', () => {
+    console.log(`✅ 伺服器已啟動，監聽 Port: ${port}`);
+});
