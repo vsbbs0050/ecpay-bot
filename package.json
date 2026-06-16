@@ -6,6 +6,6 @@
     "start": "node test.js"
   },
   "dependencies": {
-    "http": "^0.0.1-security"
+    "@line/bot-sdk": "^9.0.0"
   }
 }
