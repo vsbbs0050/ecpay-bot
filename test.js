@@ -3,9 +3,9 @@ const crypto = require('crypto');
 const line = require('@line/bot-sdk');
 
 // --- 你的綠界與 LINE 設定 ---
-const MerchantID = '2000132';
-const HashKey = '5294y06JbISpM5x9';
-const HashIV = 'v77hoKGq4kWxNNIS';
+const MerchantID = '3504191';
+const HashKey = 'iXuAcQDXeoeXgW00';
+const HashIV = 'oNxKnJgKY1E435LS';
 
 const config = {
     channelAccessToken: 'RXPli5RxJTUq1BbRFIP1VVRGn1vhXPvQTcBRDXtzAVCzkanwsnXo5ybO9HzIdkzcZ2WPd4XAl18azCTkhYOaDY+V4TGeLyZzWGWR3X9vd0gOvh7uD/pKgfVSUhRSDG3Jnmw99A7kYNHusVp3GskwVwdB04t89/1O/w1cDnyilFU=', // 記得換成你的
