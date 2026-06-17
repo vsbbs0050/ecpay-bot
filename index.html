@@ -69,6 +69,15 @@
                 btn.disabled = false;
             }
         }
+
+        // 監聽頁面顯示事件 (包含從上一頁返回)
+window.addEventListener('pageshow', function(event) {
+    // 如果是從瀏覽器緩存返回的 (event.persisted 是 true)，就強制重新整理
+    if (event.persisted) {
+        window.location.reload();
+    }
+    });
+        
     </script>
 </body>
 </html>
