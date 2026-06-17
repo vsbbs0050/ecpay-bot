@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<body>
+  <p>正在為您開啟安全瀏覽器進行支付...</p>
+  <script>
+    // 設定強制開啟外部瀏覽器的 Intent URL (Android)
+    // 綠界連結請填入下方 URL 編碼處
+    window.location.href = "intent://[https://p.ecpay.com.tw/4662BCD]#Intent;scheme=https;package=com.android.chrome;end";
+
+    // iOS 系統通常會直接觸發跳轉，若無則自動導向
+    setTimeout(function(){
+      window.location.href = "[https://p.ecpay.com.tw/4662BCD]";
+    }, 500);
+  </script>
+</body>
+</html>
