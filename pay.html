@@ -3,51 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>名派汽車方向盤 - 前往付款</title>
+    <title>名派汽車方向盤 - 付款指引</title>
     <style>
-        body { 
-            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-            background-color: #f7f7f7; 
-        }
-        .card { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 16px; 
-            text-align: center; 
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1); 
-            width: 85%; 
-            max-width: 400px; 
-        }
-        h3 { color: #333; margin-top: 0; }
-        p { color: #666; font-size: 14px; line-height: 1.5; }
-        .btn { 
-            display: block; 
-            background: #06C755; 
-            color: white; 
-            padding: 16px; 
-            text-decoration: none; 
-            border-radius: 10px; 
-            font-weight: bold; 
-            margin-top: 25px; 
-            font-size: 16px;
-        }
-        .notice { font-size: 12px; color: #999; margin-top: 20px; }
+        body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; background-color: #f7f7f7; }
+        .card { background: white; padding: 30px; border-radius: 16px; text-align: center; width: 85%; max-width: 400px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .btn { display: block; background: #06C755; color: white; padding: 16px; text-decoration: none; border-radius: 10px; font-weight: bold; margin-bottom: 20px; }
+        .ios-tip { font-size: 13px; color: #555; border: 1px dashed #ccc; padding: 10px; border-radius: 8px; margin-top: 20px; }
     </style>
 </head>
 <body>
     <div class="card">
-        <h3>準備前往付款</h3>
-        <p>為確保繳費資訊順利顯示並避免中斷，請點擊下方按鈕前往瀏覽器完成支付。</p>
+        <h3>即將開啟付款頁面</h3>
+        <p>因 iPhone 安全設定，請點擊下方按鈕前往瀏覽器：</p>
         
-        <a href="https://p.ecpay.com.tw/4662BCD" class="btn" target="_blank" rel="noopener noreferrer">開啟付款頁面</a>
+        <a href="https://p.ecpay.com.tw/4662BCD" class="btn" onclick="window.open(this.href); return false;">點此開啟付款頁面</a>
         
-        <div class="notice">
-            若跳轉後無法開啟，請嘗試重新點擊按鈕。
+        <div class="ios-tip">
+            <strong>若頁面沒反應：</strong><br>
+            請點選右上角三個點 (⋯) 或 Safari 圖示，選擇<strong>「以 Safari 開啟」</strong>。
         </div>
     </div>
 </body>
