@@ -52,6 +52,18 @@
     
 
     <script>
+// 網頁一開啟就自動執行暖身，不用等使用者按按鈕
+    window.addEventListener('load', function() {
+        console.log("後端暖身中...");
+        // 將這裡換成你真實的 Render 網址 (後面不需要接 /get-atm)
+        fetch('https://你的服務名稱.onrender.com/') 
+            .then(res => console.log("後端已喚醒"))
+            .catch(err => console.error("暖身請求失敗，但不影響使用"));
+    });
+
+    // ...你原本的產生按鈕邏輯放在下面...
+
+       
         async function pay() {
             const btn = document.getElementById('payBtn');
             const status = document.getElementById('status');
